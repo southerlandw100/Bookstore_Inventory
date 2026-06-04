@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import books from "./routes/books.js";
+
 
 const app = new Hono();
 
@@ -13,5 +15,7 @@ app.use("/*", cors({ origin: corsOrigins }));
 app.get("/health", (c) => {
   return c.json({ status: "ok" });
 });
+
+app.route("/books", books);
 
 export default app;
