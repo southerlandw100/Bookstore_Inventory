@@ -57,8 +57,8 @@ router.post('/:id/sell', async (c) => {
     
     //checking if this specific book has already been sold
     const existing = await db.select().from(books).where(eq(books.id, id))
-    if (existing[0].status === 'sold') return c.json({ error: 'Already Sold' }, 409)
     if (!existing[0]) return c.json({ error: 'Not Found' }, 404)
+    if (existing[0].status === 'sold') return c.json({ error: 'Already Sold' }, 409)
 
     const soldBook = await db.update(books).set({ status: 'sold', date_sold: new Date() }).where(eq(books.id, id)).returning()
     if(!soldBook[0]) return c.json({ error: 'Not Found' }, 404)
