@@ -1,6 +1,6 @@
 type BookStatus = 'in_stock' | 'sold'
 
-type Book = {
+export type Book = {
     id: number
     isbn: string
     title: string
