@@ -39,7 +39,7 @@ router.put('/:id', async (c) => {
 
 router.get('/lookup/:isbn', async (c) => {
     const isbn = c.req.param('isbn')
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${process.env.GOOGLE_BOOKS_API_KEY}`)
     const data = await response.json()
 
     if(!data.items) return c.json({ error: 'Not Found' }, 404)
