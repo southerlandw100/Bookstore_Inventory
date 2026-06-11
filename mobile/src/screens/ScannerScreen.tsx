@@ -13,23 +13,23 @@ export default function Scanner() {
     }, [permission, requestPermission]);
 
 
-  const handleBarCodeScanned = async ({ type, data }: BarcodeScanningResult) => {
+  const handleBarCodeScanned = async ({ data }: BarcodeScanningResult) => {
       setScanned(true);
 
       try {
           const response = await fetch(`http://10.0.0.222:3000/books/lookup/${data}`);
 
           if (!response.ok) {
-              console.log('Lookup failed: ', response.status);
+            console.log('Lookup failed: ', response.status);
+            setScanned(false);
           } else {
-              const bookInfo = await response.json();                                                                                                                                                        
+              const bookInfo = await response.json();
               console.log('Book info: ', bookInfo);
           }
-      } catch (err) { 
-          console.log('Network error: ', err);
+      } catch (err) {
+        console.log('Network error: ', err);
+        setScanned(false);
       }
-
-      setScanned(false);
   };
 
 
@@ -43,12 +43,51 @@ export default function Scanner() {
     }
 
     return (
-        <CameraView
-            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-            barcodeScannerSettings={{
-                barcodeTypes: ['ean13']
-            }}
-            style={StyleSheet.absoluteFillObject}
-        />
+        <View style={{ flex: 1 }}>
+            <CameraView
+                onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+                barcodeScannerSettings={{
+                    barcodeTypes: ['ean13']
+                }}
+                style={StyleSheet.absoluteFillObject}
+            />
+
+            <View style={styles.mask} />
+
+            <View style={styles.middleRow}>
+                <View style={styles.mask} />
+                <View style={[styles.reticle, { borderColor: scanned ? 'lime' : 'white' }]} />
+                <View style={styles.mask} />
+            </View>
+
+            <View style={[styles.mask, styles.bottom]}>
+                <Text style={styles.instructions}>Frame barcode within the box</Text>
+            </View>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    mask: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    },
+    middleRow: {
+        flexDirection: 'row',
+        height: 150,
+    },
+    reticle: {
+        width: 250,
+        height: 150,
+        borderWidth: 4,
+        borderRadius: 12,
+    },
+    bottom: {
+        alignItems: 'center',
+        paddingTop: 24,
+    },
+    instructions: {
+        color: 'white',
+        fontSize: 16,
+    },
+});
