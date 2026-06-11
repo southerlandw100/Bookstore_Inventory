@@ -1,10 +1,18 @@
-  import BookEntryScreen from './src/screens/BookEntryScreen';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RootStackParamList } from "./src/types";
+import ScannerScreen from './src/screens/ScannerScreen'
+import BookEntryScreen from "./src/screens/BookEntryScreen";
 
-  export default function App() {
-    return (
-      <BookEntryScreen
-        isbn="9780099428797"
-        lookupResult={{ title: 'Crash', author: 'J.G. Ballard', genre: 'Fiction' }}
-      />
-    );
-  }
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Scanner" component={ScannerScreen} />
+        <Stack.Screen name="BookEntry" component={BookEntryScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}

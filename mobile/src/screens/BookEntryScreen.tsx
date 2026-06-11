@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types';
 
-type BookEntryScreenProps = {
-    isbn: string,
-    lookupResult: { title: string; author: string; genre: string } | null;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'BookEntry'>;
 
-export default function BookEntryScreen({ isbn, lookupResult } : BookEntryScreenProps) {
+export default function BookEntryScreen({ route, navigation }: Props) {
+    const { isbn, lookupResult } = route.params;
     const [title, setTitle] = useState(lookupResult?.title ?? '');
     const [author, setAuthor] = useState(lookupResult?.author ?? '');
     const [genre, setGenre] = useState(lookupResult?.genre ??  '');
@@ -25,6 +25,7 @@ export default function BookEntryScreen({ isbn, lookupResult } : BookEntryScreen
             } else {
                 const saved = await response.json();
                 console.log('Saved: ', saved);
+                navigation.navigate('Scanner');
             }
         }
         catch (err) { console.log('Network Error: ', err); }

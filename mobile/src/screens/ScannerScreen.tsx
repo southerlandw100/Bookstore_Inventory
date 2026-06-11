@@ -1,8 +1,12 @@
 import { useCameraPermissions, CameraView, BarcodeScanningResult } from "expo-camera";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Button, View, Text } from "react-native"
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types";
 
 export default function Scanner() {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Scanner'>>();
     const [permission, requestPermission] = useCameraPermissions();
     const [scanned, setScanned] = useState(false);
 
@@ -11,6 +15,12 @@ export default function Scanner() {
             requestPermission();
         }
     }, [permission, requestPermission]);
+
+    useFocusEffect(
+      useCallback(() => {
+          setScanned(false);
+      }, [])
+    );
 
 
   const handleBarCodeScanned = async ({ data }: BarcodeScanningResult) => {
@@ -21,10 +31,10 @@ export default function Scanner() {
 
           if (!response.ok) {
             console.log('Lookup failed: ', response.status);
-            setScanned(false);
+            navigation.navigate('BookEntry', { isbn: data, lookupResult: null });
           } else {
               const bookInfo = await response.json();
-              console.log('Book info: ', bookInfo);
+              navigation.navigate('BookEntry', { isbn: data, lookupResult: bookInfo });
           }
       } catch (err) {
         console.log('Network error: ', err);
