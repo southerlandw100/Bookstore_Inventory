@@ -38,7 +38,6 @@ export default function Scanner() {
           }
       } catch (err) {
         console.log('Network error: ', err);
-        setScanned(false);
       }
   };
 
