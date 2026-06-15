@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { books } from '../db/schema.js'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 
 const router = new Hono()
 
@@ -10,11 +10,12 @@ router.get('/', async (c) => {
     return c.json(allBooks);
 })
 
-router.get('/isbn/:isbn', async (c) => {
-    const isbn = c.req.param("isbn")
-    const bookByISBN = await db.select().from(books).where(eq(books.isbn, isbn))
-    return c.json(bookByISBN[0])
-})
+  router.get('/isbn/:isbn', async (c) => {
+      const isbn = c.req.param("isbn")
+      const inStockBooks = await db.select().from(books)
+          .where(and(eq(books.isbn, isbn), eq(books.status, 'in_stock')))
+      return c.json(inStockBooks)
+  })
 
 router.get('/:id', async (c) => {
     const id = Number(c.req.param("id"))

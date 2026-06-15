@@ -25,7 +25,7 @@ export default function BookEntryScreen({ route, navigation }: Props) {
             } else {
                 const saved = await response.json();
                 console.log('Saved: ', saved);
-                navigation.navigate('Scanner');
+                navigation.popTo('Scanner');
             }
         }
         catch (err) { console.log('Network Error: ', err); }
