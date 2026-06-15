@@ -67,6 +67,20 @@ router.post('/:id/sell', async (c) => {
     return c.json(soldBook[0], 200)
 })
 
+router.post('/:id/return', async (c) => {
+    const id = Number(c.req.param("id"))
+
+    //checking if this specific book is actually marked as sold
+    const existing = await db.select().from(books).where(eq(books.id, id))
+    if (!existing[0]) return c.json({ error: 'Not Found' }, 404)
+    if (existing[0].status === 'in_stock') return c.json({ error: 'Not Sold' }, 409)
+
+    const returnedBook = await db.update(books).set({ status: 'in_stock', date_sold: null }).where(eq(books.id, id)).returning()
+    if(!returnedBook[0]) return c.json({ error: 'Not Found' }, 404)
+
+    return c.json(returnedBook[0], 200)
+})
+
 router.delete('/:id', async (c) => {
     const id = Number(c.req.param('id'))
 

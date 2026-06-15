@@ -12,4 +12,5 @@ export const books = pgTable("books", {
   status: bookStatusEnum("status").notNull().default("in_stock"),
   date_added: timestamp("date_added").notNull().defaultNow(),
   date_sold: timestamp("date_sold"),
+  notes: text("notes"),
 });

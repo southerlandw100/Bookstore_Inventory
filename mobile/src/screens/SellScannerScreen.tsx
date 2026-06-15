@@ -5,6 +5,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList, CartItem } from "../types";
 import { useCart } from "../context/CartContext";
+import { getInStockCopies } from "../api";
 
 export default function SellScannerScreen() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'SellScanner'>>();
@@ -31,8 +32,7 @@ export default function SellScannerScreen() {
         setScanned(true);
 
         try {
-            const response = await fetch(`http://10.0.0.222:3000/books/isbn/${data}`);
-            const matches: CartItem[] = await response.json();
+            const matches = await getInStockCopies(data);
 
             if (matches.length === 0) {
                 setFeedback({ message: 'Not in stock', color: 'red' });

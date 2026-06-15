@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import { createBook } from '../api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'BookEntry'>;
 
@@ -14,18 +15,13 @@ export default function BookEntryScreen({ route, navigation }: Props) {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch('http://10.0.0.222:3000/books', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ isbn, title, author, genre, asking_price: price }),
-            });
+            const saved = await createBook({ isbn, title, author, genre, asking_price: price });
 
-            if (!response.ok) {
-                console.log('Save failed: ', response.status);
-            } else {
-                const saved = await response.json();
+            if (saved) {
                 console.log('Saved: ', saved);
                 navigation.popTo('Scanner');
+            } else {
+                console.log('Save failed');
             }
         }
         catch (err) { console.log('Network Error: ', err); }

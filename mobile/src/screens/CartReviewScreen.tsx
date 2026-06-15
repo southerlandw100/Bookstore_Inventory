@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useCart } from '../context/CartContext';
+import { sellBook } from '../api';
 
 export default function CartReviewScreen() {
     const { cart, removeFromCart } = useCart();
@@ -11,14 +12,12 @@ export default function CartReviewScreen() {
 
         for (const item of cart) {
             try {
-                const response = await fetch(`http://10.0.0.222:3000/books/${item.id}/sell`, {
-                    method: 'POST',
-                });
+                const success = await sellBook(item.id);
 
-                if (response.ok) {
+                if (success) {
                     removeFromCart(item.id);
                 } else {
-                    console.log(`Failed to sell "${item.title}": `, response.status);
+                    console.log(`Failed to sell "${item.title}"`);
                 }
             } catch (err) {
                 console.log(`Network error selling "${item.title}": `, err);

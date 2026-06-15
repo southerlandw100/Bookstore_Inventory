@@ -2,7 +2,7 @@ export type LookupResult = { title: string; author: string; genre: string }
 
 type BookStatus = 'in_stock' | 'sold'
 
-export type CartItem = {
+export type Book = {
     id: number
     isbn: string
     title: string
@@ -13,6 +13,8 @@ export type CartItem = {
     date_added: string
     date_sold: string | null
 }
+
+export type CartItem = Book
 
 export type RootStackParamList = {
     Scanner: undefined;

@@ -1,3 +1,218 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 0 24px;
+}
+
+.tabs button {
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--text-h);
+  font-weight: bold;
+}
+
+.search-box {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 17px;
+  padding: 10px 14px;
+  margin: 0 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.filter-bar label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.filter-bar input,
+.filter-bar select {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.filter-bar button {
+  padding: 7px 12px;
+}
+
+.filter-banner,
+.bulk-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 16px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.filter-banner {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.bulk-toolbar {
+  background: var(--code-bg);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 15px;
+}
+
+.inventory-table th,
+.inventory-table td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.inventory-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--code-bg);
+  color: var(--text-h);
+  user-select: none;
+}
+
+.inventory-table thead th.sortable {
+  cursor: pointer;
+}
+
+.inventory-table tbody tr:nth-child(even) {
+  background: var(--social-bg);
+}
+
+.inventory-table tbody tr.selected-row {
+  background: var(--accent-bg);
+}
+
+.inventory-table tbody tr:hover {
+  background: var(--accent-bg);
+}
+
+.inventory-table input {
+  font: inherit;
+  width: 100%;
+  min-width: 80px;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.title-cell {
+  cursor: pointer;
+}
+
+.title-cell:hover {
+  text-decoration: underline;
+  color: var(--accent);
+}
+
+.notes-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.pagination label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.pagination select {
+  font: inherit;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.aging-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.aging-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.aging-controls input {
+  font: inherit;
+  width: 70px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.inventory-table tbody tr.stale-row {
+  background: rgba(255, 99, 71, 0.15);
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;

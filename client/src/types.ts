@@ -10,4 +10,5 @@ export type Book = {
     status: BookStatus
     date_added: string
     date_sold: string | null
+    notes: string | null
 }

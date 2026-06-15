@@ -4,11 +4,13 @@ import { StyleSheet, Button, View, Text } from "react-native"
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
+import { lookupBook } from "../api";
 
 export default function Scanner() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Scanner'>>();
     const [permission, requestPermission] = useCameraPermissions();
     const [scanned, setScanned] = useState(false);
+    const [feedback, setFeedback] = useState<{ message: string; color: string } | null>(null);
 
     useEffect(() => {
         if (permission === null) {
@@ -27,17 +29,12 @@ export default function Scanner() {
       setScanned(true);
 
       try {
-          const response = await fetch(`http://10.0.0.222:3000/books/lookup/${data}`);
-
-          if (!response.ok) {
-            console.log('Lookup failed: ', response.status);
-            navigation.navigate('BookEntry', { isbn: data, lookupResult: null });
-          } else {
-              const bookInfo = await response.json();
-              navigation.navigate('BookEntry', { isbn: data, lookupResult: bookInfo });
-          }
+          const bookInfo = await lookupBook(data);
+          navigation.navigate('BookEntry', { isbn: data, lookupResult: bookInfo });
       } catch (err) {
         console.log('Network error: ', err);
+        setFeedback({ message: 'Network error - try again', color: 'red'})
+        setTimeout(() => { setScanned(false); setFeedback(null); }, 1500)
       }
   };
 
@@ -65,12 +62,12 @@ export default function Scanner() {
 
             <View style={styles.middleRow}>
                 <View style={styles.mask} />
-                <View style={[styles.reticle, { borderColor: scanned ? 'lime' : 'white' }]} />
+                <View style={[styles.reticle, { borderColor: feedback?.color ?? (scanned ? 'lime' : 'white') }]} />
                 <View style={styles.mask} />
             </View>
 
             <View style={[styles.mask, styles.bottom]}>
-                <Text style={styles.instructions}>Frame barcode within the box</Text>
+                <Text style={styles.instructions}>{feedback?.message ?? 'Frame barcode within the box'}</Text>
             </View>
         </View>
     );
