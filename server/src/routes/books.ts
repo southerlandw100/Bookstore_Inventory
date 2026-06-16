@@ -32,6 +32,7 @@ router.post('/', async (c) => {
 router.put('/:id', async (c) => {
     const id = Number(c.req.param("id"))
     const body = await c.req.json()
+    if (body.date_added) body.date_added = new Date(body.date_added)
     const updatedBook = await db.update(books).set({ ...body }).where(eq(books.id, id)).returning()
     if (!updatedBook[0]) return c.json({ error: 'Not Found' }, 404)
     
